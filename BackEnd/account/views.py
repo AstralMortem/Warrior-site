@@ -1,3 +1,23 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ReadOnlyModelViewSet
+from .serializers import UserListSerializer, UserDetailSerializer,BeltListSerializer,BeltDetailSerializer
+from .models import BaseUser,Belt
 
-# Create your views here.
+
+
+class UserViewSet(ReadOnlyModelViewSet):
+    queryset = BaseUser.objects.all()
+    filterset_fields = ['is_staff']
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return UserListSerializer
+        elif self.action == 'retrieve':
+            return UserDetailSerializer
+        
+
+class BeltViewSet(ReadOnlyModelViewSet):
+    queryset = Belt.objects.all()
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return BeltListSerializer
+        elif self.action == 'retrieve':
+            return BeltDetailSerializer
