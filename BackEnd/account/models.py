@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils.translation import gettext_lazy as _
-from django_better_admin_arrayfield.models.fields import ArrayField
+from django_jsonform.models.fields import ArrayField
 from django.utils import timezone
 import uuid
 
@@ -40,8 +40,8 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
 
-        if extra_fields.get("is_coach") is not True:
-            raise ValueError(_("Superuser must have is_coach=True."))
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError(_("Superuser must have is_staff=True."))
         if extra_fields.get("is_superuser") is not True:
             raise ValueError(_("Superuser must have is_superuser=True."))
         return self.create_user(email, password, **extra_fields)
@@ -81,7 +81,7 @@ class BaseUser(AbstractBaseUser,PermissionsMixin):
     birthday = models.DateField(null=True,blank=True)
     itf_code = models.PositiveBigIntegerField(null=True,blank=True)
     itf_link = models.URLField(null=True,blank=True)
-    links = ArrayField(models.URLField(), null=True,blank=True)
+    links = ArrayField(models.URLField(blank=True,null=True), size=8,blank=True,null=True)
     coach = models.ForeignKey('self', on_delete=models.SET_NULL, null=True)
 
     is_active = models.BooleanField(_("Active status"), default=True)

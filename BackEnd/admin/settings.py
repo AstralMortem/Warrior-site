@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'jazzmin',
-    'django_better_admin_arrayfield',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,8 +39,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'account'
+    'account',
+    'news',
+    'gyms',
 ]
+
+THIRD_PARTY = [
+    'ckeditor',
+    'django_jsonform',
+    'location_field.apps.DefaultConfig',
+]
+
+INSTALLED_APPS += THIRD_PARTY
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -138,4 +147,8 @@ AUTH_USER_MODEL = 'account.BaseUser'
 
 JAZZMIN_SETTINGS = {
     
+}
+
+LOCATION_FIELD = {
+    'map.provider': 'openstreetmap'
 }
