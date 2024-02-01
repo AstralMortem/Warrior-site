@@ -9,7 +9,7 @@ import uuid
 
 
 class Belt(models.Model):
-    code = models.CharField(max_length=20)
+    code = models.CharField(max_length=20,primary_key=True)
     photo = models.ImageField(upload_to='belts')
     title = models.CharField(max_length=250)
 
@@ -17,7 +17,7 @@ class Belt(models.Model):
         return f"{self.title} ({self.code})"
     
 class BeltDescription(models.Model):
-    id = models.OneToOneField(Belt, verbose_name=_("Belts description"), on_delete=models.CASCADE, primary_key=True)
+    id = models.OneToOneField(Belt, verbose_name=_("Belts description"), on_delete=models.CASCADE, primary_key=True, related_name='description')
     ofp = models.TextField(blank=True)
     
     #TODO: expand model

@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer,RelatedField
 from .models import BaseUser,Belt,BeltDescription
 
 class UserListSerializer(ModelSerializer):
@@ -22,10 +22,10 @@ class BeltListSerializer(ModelSerializer):
 class BeltDescriptionSerializer(ModelSerializer):
     class Meta:
         model = BeltDescription
-        fields = "__all__"
+        exclude=['id']
 
 class BeltDetailSerializer(ModelSerializer):
-    description = BeltDescriptionSerializer(many=False, read_only=True)
+    description = BeltDescriptionSerializer(read_only=True)
     class Meta:
         model = Belt
-        fields = ['id','code','title','description','photo']
+        fields = ['code','title','photo','description']
