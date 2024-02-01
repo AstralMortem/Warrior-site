@@ -7,8 +7,13 @@ from django import forms
 from django_better_admin_arrayfield.admin.mixins import DynamicArrayMixin
 # Register your models here.
 
-admin.site.register(BeltDescription)
-admin.site.register(Belt)
+
+
+class BeltDescriptionAdmin(admin.StackedInline):
+    model = BeltDescription
+
+class BeltAdmin(admin.ModelAdmin):
+    inlines = [BeltDescriptionAdmin]
 
 
 
@@ -35,4 +40,4 @@ class CustomUserAdmin(UserAdmin,DynamicArrayMixin):
 
 
 admin.site.register(BaseUser,CustomUserAdmin)
-
+admin.site.register(Belt,BeltAdmin)
