@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'account',
     'news',
     'gyms',
+    'events',
+    
 ]
 
 THIRD_PARTY = [
