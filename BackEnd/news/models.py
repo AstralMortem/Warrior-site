@@ -11,6 +11,7 @@ class News(models.Model):
     text = RichTextField(_("news text"))
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
     author = models.ForeignKey("account.BaseUser",on_delete=models.SET_NULL, null=True)
+    is_archived = models.BooleanField(default=False)
     def __str__(self):
         return self.title
     
@@ -20,7 +21,7 @@ class News(models.Model):
 
 
 class NewsImage(models.Model):
-    news = models.ForeignKey(News,on_delete=models.CASCADE)
+    news = models.ForeignKey(News,on_delete=models.CASCADE, related_name='news_images')
     image = models.ImageField(upload_to='news/%Y/%m/%d')
 
     def __str__(self):

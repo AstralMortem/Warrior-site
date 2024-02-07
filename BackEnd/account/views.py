@@ -16,8 +16,10 @@ class UserViewSet(ReadOnlyModelViewSet):
 
 class BeltViewSet(ReadOnlyModelViewSet):
     queryset = Belt.objects.all()
+    pagination_class = None
     def get_serializer_class(self):
         if self.action == 'list':
             return BeltListSerializer
         elif self.action == 'retrieve':
             return BeltDetailSerializer
+
