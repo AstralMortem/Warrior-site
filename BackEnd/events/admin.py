@@ -21,10 +21,14 @@ class CompetitionAdmin(admin.ModelAdmin):
         },
     }
     fieldsets = (
-        (None, {'fields': ('title','place', 'date','competition_type', 'is_archived')}),
+        (None, {'fields': ('title','place', 'date','competition_type','is_completed', 'is_archived')}),
         (_('Command result'), {'fields': ('command_sparing','command_tul')}),
     )
     inlines = [CompetitionResultAdmin,CompetitionJudgmentResult]
+
+    list_display = ('title', 'place','date','is_completed', 'is_archived')
+    search_fields = ('title', 'place','date')
+    ordering = ('is_completed','is_archived','date')
 
 
 class AttestationResultAdmin(admin.StackedInline):
