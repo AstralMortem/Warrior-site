@@ -1,6 +1,9 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from django.core.management.utils import get_random_secret_key
+import dj_database_url
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -11,13 +14,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-c&7m1%3(1(+kv3!sp%4)0fo)=6j26mj%^_1m_0=s*w%-&4plf5'
+SECRET_KEY = os.getenv("DJANGO_SECRET",get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG",False)
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 
 # Application definition
@@ -30,28 +33,30 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'django_filters',
-    'storages',
+]
 
+CORE_APPS = [
     'account',
     'news',
     'gyms',
     'events',
     'attendance'
-    
 ]
 
 THIRD_PARTY = [
     'ckeditor',
     'django_jsonform',
     'location_field.apps.DefaultConfig',
+    'rest_framework',
+    'django_filters',
+    'storages',
 ]
-
+INSTALLED_APPS += CORE_APPS
 INSTALLED_APPS += THIRD_PARTY
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -84,16 +89,24 @@ WSGI_APPLICATION = 'admin.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': '127.0.0.1',
-        'PORT': 5432,
-        'USER': 'warrior',
-        'PASSWORD': 'warrior',
-        'NAME': 'warrior'
+
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'HOST': '127.0.0.1',
+            'PORT': 5432,
+            'USER': 'warrior',
+            'PASSWORD': 'warrior',
+            'NAME': 'warrior'
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': dj_database_url.parse(os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True),
+    }
 
 
 # Password validation
@@ -131,13 +144,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = ''
-STATICFILES_DIR = [
-    BASE_DIR / 'static'
-]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -176,7 +184,10 @@ STORAGES = {
 
         }
     },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
+    "staticfiles": 
+        {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
+        } if DEBUG else {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        }
 }
