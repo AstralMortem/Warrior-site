@@ -1,11 +1,24 @@
-FROM node:18-alpine
+ARG NODE_VERSION=18.0.0
+ARG PORT=3000
 
-WORKDIR /app
+FROM node:${NODE_VERSION}-slim as base
 
-COPY ../../frontend/. /app/
+ENV NODE_ENV=production
+WORKDIR /src
 
-RUN yarn install
+FROM base as build
 
-EXPOSE 3000
+COPY --link ../../frontend/package.json ../../frontend/yarn.lock ./
+RUN yarn install --production=false
 
-RUN yarn build
+COPY --link ../../frontend .
+
+RUN yarn nuxt build
+
+FROM base
+
+ENV PORT=$PORT
+
+COPY --from=build /src/.output /src/.output
+
+CMD ["node", ".output/server/index.mjs"]

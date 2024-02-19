@@ -39,7 +39,6 @@ services:
     build: 
       context: .
       dockerfile: ./docker/frontend/Dockerfile
-    command: node ./.output/server/index.mjs
     expose:
       - 3000
     volumes:
