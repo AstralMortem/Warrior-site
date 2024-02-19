@@ -17,7 +17,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET",get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.getenv("DEBUG",False)
+
 
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
 ]
 
 CORE_APPS = [
@@ -50,6 +52,7 @@ THIRD_PARTY = [
     'rest_framework',
     'django_filters',
     'storages',
+    "corsheaders",
 ]
 INSTALLED_APPS += CORE_APPS
 INSTALLED_APPS += THIRD_PARTY
@@ -58,6 +61,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -195,3 +199,5 @@ STORAGES = {
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
         }
 }
+
+CORS_ALLOW_ALL_ORIGINS=True

@@ -8,7 +8,8 @@ defineProps({
   }
 })
 
-const {data:belts,pending} = await useFetch('/api/belts')
+// const {data:belts,pending} = await useFetch('/api/belts')
+const {data:belts,pending} = useApiRequest('/api/belts')
 
 </script>
 
