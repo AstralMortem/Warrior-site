@@ -189,7 +189,7 @@ STORAGES = {
             "bucket_name": os.getenv("BUCKET_NAME"),
             "region_name": os.getenv("REGION_NAME"),
             "querystring_auth": False,
-            "endpoint_url": f"https://{os.getenv("REGION_NAME")}.digitaloceanspace.com"
+            "endpoint_url": f"https://{os.getenv("REGION_NAME")}.digitaloceanspaces.com"
 
         }
     },
