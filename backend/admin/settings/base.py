@@ -5,7 +5,7 @@ import dj_database_url
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -126,22 +126,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-LOGIN_REDIRECT_URL = '/'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 AUTH_USER_MODEL = 'account.BaseUser'
 
 
@@ -162,26 +147,18 @@ REST_FRAMEWORK = {
     )
 }
 
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3.S3Storage",
-        "OPTIONS":{
-            "access_key": os.getenv("ACCESS_KEY"),
-            "secret_key": os.getenv("SECRET_KEY"),
-            "bucket_name": os.getenv("BUCKET_NAME"),
-            "region_name": os.getenv("REGION_NAME"),
-            "endpoint_url": f"https://{os.getenv('REGION_NAME')}.digitaloceanspaces.com",
-            "object_parameters": {
-                "CacheControl": "max-age=86400"
-            },
-            "location": f"https://{os.getenv('BUCKET_NAME')}.{os.getenv('REGION_NAME')}.digitaloceanspaces.com"
-
-        }
-    },
-    "staticfiles": 
-        {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
-        }
-}
 
 CORS_ALLOW_ALL_ORIGINS=True
+CSRF_TRUSTED_ORIGINS = [
+    'https://api.warrior.localhost'
+]
+
+
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIR = [
+    BASE_DIR / 'static'
+]
+
+MEDIA_ROOT = BASE_DIR / 'media/'
+MEDIA_URL = '/media/'
