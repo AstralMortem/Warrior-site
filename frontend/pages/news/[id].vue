@@ -67,7 +67,7 @@ import {Autoplay, Pagination, Navigation} from 'swiper/modules';
 
 const route = useRoute()
 
-const {data,pending} = await useFetch(`/api/news/${route.params.id}`)
+const {data,pending} = await useApiRequest(`/api/news/${route.params.id}`)
 
 
 function convertDate(date_string:string){
@@ -75,8 +75,23 @@ function convertDate(date_string:string){
     return d.toLocaleDateString() 
   }
 
+  useHead({
+    title: "Новини | TKD клуб ВОЇН",
+    meta: [
+        {name: 'description', content: data }
+    ]
+})
+
+useSeoMeta({
+  title: data.value?.full_name +" | TKD клуб ВОЇН",
+  description: data
+})
+  
+
 </script>
 
-<style>
-
+<style scoped>
+.swiper-pagination-bullet{
+    margin-top: 25px !important;
+}
 </style>

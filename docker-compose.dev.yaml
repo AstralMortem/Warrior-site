@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: "warrior"
       POSTGRES_PASSWORD: "warrior"
     volumes:
-      - pgdbdata_dev:/var/lib/postgresql/data/
+      - pgdbdata:/var/lib/postgresql/data/
     expose:
       - 5432
 
@@ -32,7 +32,7 @@ services:
     build: 
       context: .
       dockerfile: ./docker/frontend/Dockerfile.dev
-    command: "yarn run dev"
+    command: "yarn run dev --host 0.0.0.0"
     depends_on:
       - backend
     env_file:
@@ -41,10 +41,10 @@ services:
       - "24678:24678"
       - "3000:3000"
     volumes:
-      - ./frontend:/src
+      - ./frontend:/src:rw
       - node_modules:/src/node_modules
 
 volumes:
-  pgdbdata_dev: null
+  pgdbdata: null
   node_modules: null
 

@@ -12,5 +12,5 @@ export function useApiRequest<T>(
 ) {
   const config = useRuntimeConfig();
 
-  return useFetch(request, {baseURL: config.public.BASE_URL, ...opts});
+  return useFetch(request, {baseURL: config.public.BASE_URL,server:false,immediate:true,...opts});
 }

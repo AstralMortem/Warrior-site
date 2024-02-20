@@ -30,7 +30,12 @@
 </template>
 
 <script lang="ts" setup>
-
+useHead({
+    title: "Політика конфіденційності | TKD клуб ВОЇН",
+    meta: [
+        {name: 'description', content: "Політика конфіденційності" }
+    ]
+})
 </script>
 
 <style>

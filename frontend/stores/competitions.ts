@@ -10,17 +10,17 @@ export const useCompetitionsStore = defineStore({
    actions: {
     async initStore(){
       this.pending = true
-      const data = await $fetch('/api/events/competitions/')
-      this.next = data.next
-      this.competitions = data.results
+      const {data} = await useApiRequest('/api/events/competitions/')
+      this.next = data.value.next
+      this.competitions = data.value.results
       this.pending = false
     },
     async fetchNext(){
       if(this.next){
         this.pending = true
-        const data = await $fetch('/api/events/competitions/',{query:{'next':this.next}})
-        this.next = data.next
-        this.competitions = [...this.competitions,data.results]
+        const  {data} = await useApiRequest(this.next)
+        this.next = data.value.next
+        this.competitions = [...this.competitions,data.value.results]
         this.pending = false
       }
     }

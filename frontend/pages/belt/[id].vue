@@ -70,7 +70,20 @@
 <script lang="ts" setup>
 const route = useRoute()
 
-const {data,pending} = useFetch(`/api/belts/${route.params.id}`)
+const {data,pending} = await useApiRequest(`/api/account/belts/${route.params.id}`)
+
+
+useHead({
+    title: data.value?.title +" | TKD клуб ВОЇН",
+    meta: [
+        {name: 'description', content: data }
+    ]
+})
+
+useSeoMeta({
+  title:data.value?.title +" | TKD клуб ВОЇН",
+  description: data
+})
 
 </script>
 

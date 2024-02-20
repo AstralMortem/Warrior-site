@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nuxt-icon', 'nuxt3-leaflet', 'nuxt-swiper','@nuxt/image',],
   runtimeConfig:{
     public: {
-      BASE_URL: 'http://localhost:8000/api',
+      BASE_URL: 'http://localhost:8000',
     },
   }
 })
