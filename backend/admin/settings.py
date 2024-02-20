@@ -1,10 +1,8 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
 from django.core.management.utils import get_random_secret_key
 import dj_database_url
 
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,7 +15,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET",get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG",False)
+DEBUG = int(os.getenv("DEBUG",0))
 
 
 
@@ -90,22 +88,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'admin.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-
-# if DEBUG:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'HOST': '127.0.0.1',
-#             'PORT': 5432,
-#             'USER': 'warrior',
-#             'PASSWORD': 'warrior',
-#             'NAME': 'warrior'
-#         }
-#     }
-# else:
 DATABASES = {
         'default': dj_database_url.parse(os.getenv('DATABASE_URL'),
         conn_max_age=600,
@@ -188,15 +170,16 @@ STORAGES = {
             "secret_key": os.getenv("SECRET_KEY"),
             "bucket_name": os.getenv("BUCKET_NAME"),
             "region_name": os.getenv("REGION_NAME"),
-            "querystring_auth": False,
-            "endpoint_url": f"https://{os.getenv("REGION_NAME")}.digitaloceanspaces.com"
+            "endpoint_url": f"https://{os.getenv('REGION_NAME')}.digitaloceanspaces.com",
+            "object_parameters": {
+                "CacheControl": "max-age=86400"
+            },
+            "location": f"https://{os.getenv('BUCKET_NAME')}.{os.getenv('REGION_NAME')}.digitaloceanspaces.com"
 
         }
     },
     "staticfiles": 
         {
-            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
-        } if DEBUG else {
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
         }
 }
