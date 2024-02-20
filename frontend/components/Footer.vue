@@ -60,12 +60,15 @@
       <NuxtLink to="/privacy-policy">
         <p class="font-display font-normal text-[15px] text-silver hover:underline cursor-pointer">Політика конфіденційності</p>
       </NuxtLink>
+      <NuxtLink :to="config.public.BASE_URL + '/admin/'">
+        <p class="font-display font-normal text-[15px] text-silver hover:underline cursor-pointer">Адмін</p>
+      </NuxtLink>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-
+const config = useRuntimeConfig()
 </script>
 
 <style>

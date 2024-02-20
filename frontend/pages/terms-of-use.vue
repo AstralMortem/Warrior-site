@@ -20,7 +20,12 @@
 </template>
 
 <script lang="ts" setup>
-
+useHead({
+    title: "Умови використання | TKD клуб ВОЇН",
+    meta: [
+        {name: 'description', content: "Умови використання" }
+    ]
+})
 </script>
 
 <style>

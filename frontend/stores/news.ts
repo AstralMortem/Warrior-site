@@ -10,17 +10,17 @@ export const useNewsStore = defineStore({
   actions: {
     async initStore(){
       this.pending = true
-      const data = await $fetch('/api/news/')
-      this.next = data.next
-      this.news = data.results
+      const {data} = await useApiRequest('/api/news/')
+      this.next = data.value.next
+      this.news = data.value.results
       this.pending = false
     },
     async fetchNext(){
       if(this.next){
         this.pending = true
-        const data = await $fetch('/api/news/',{query:{'next':this.next}})
-        this.next = data.next
-        this.news = [...this.news,data.results]
+        const {data} = await useApiRequest(this.next)
+        this.next = data.value.next
+        this.news = [...this.news,data.value.results]
         this.pending = false
       }
     }

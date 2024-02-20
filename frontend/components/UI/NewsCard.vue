@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col space-y-3">
   <div class="flex flex-col-reverse md:flex-row space-x-4">
-    <div class="slider rounded-lg p-4 ring-1 ring-yellow" v-if="props.news_images">
-        <Swiper class="max-w-[360px]"
+    <div class="slider rounded-lg p-4 ring-1 ring-yellow" v-if="props.news_images.length>0">
+        <Swiper class="max-w-[360px] "
                   :modules="[Autoplay, Pagination, Navigation]"
                   :centeredSlides="true"
                   :navigation="true"
@@ -18,7 +18,7 @@
                   }"
                   :grabCursor="true">
                     <SwiperSlide v-for="news_photo in props.news_images"  >
-                      <img :src="news_photo" class="rounded-lg w-75 h-75 "/>
+                      <img :src="news_photo" class="rounded-lg w-fit h-fit"/>
                     </SwiperSlide>
                   </Swiper>
     </div>
@@ -31,7 +31,7 @@
           <UIButton class="mt-4 self-center" @click="router.push({path:`/news/${props.id}`})">Більше...</UIButton>
     </div>
   </div>
-  <UDivider/>
+  <hr/>
   </div>
 </template>
 

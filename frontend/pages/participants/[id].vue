@@ -88,7 +88,7 @@ function convertDate(data_string: string) {
 }
 const route = useRoute()
 
-const { data: user, pending } = await useFetch('/api/users/' + route.params.id)
+const { data: user, pending } = await useApiRequest('/api/account/users/' + route.params.id)
 
 function getEnumType(key:string, dict:Object){
   return dict[key]
@@ -99,7 +99,17 @@ const fetchIcon = (url:string) =>{
   const uri = new URL(url).hostname
   return base + uri
 } 
+useHead({
+    title: user.value.full_name +" | TKD клуб ВОЇН",
+    meta: [
+        {name: 'description', content: user }
+    ]
+})
 
+useSeoMeta({
+  title: user.value?.full_name +" | TKD клуб ВОЇН" ,
+  description:user
+})
 
 
 

@@ -12,29 +12,29 @@ export const useUsersStore = defineStore({
    actions: {
     async initStore(){
       this.pending = true
-      const coachesData = await $fetch('/api/users/coaches/')
-      const participantsData = await $fetch('/api/users/participants/')
-      this.nextCoaches = coachesData.next
-      this.coaches = coachesData.results
-      this.nextParticipants = participantsData.next
-      this.participants = participantsData.results
+      const {data:coachesData} = await useApiRequest('/api/account/users/', {params:{"is_staff":true}})
+      const {data:participantsData} = await useApiRequest('/api/account/users/',{params:{"is_staff":false}})
+      this.nextCoaches = coachesData.value.next
+      this.coaches = coachesData.value.results
+      this.nextParticipants = participantsData.value.next
+      this.participants = participantsData.value.results
       this.pending = false
     },
     async fetchNextCoaches(){
       if(this.nextCoaches){
         this.pending = true
-        const data = await $fetch('/api/users/coaches/',{query:{'next':this.nextCoaches}})
-        this.nextCoaches = data.next
-        this.coaches = [...this.coaches,data.results]
+        const {data} = await useApiRequest(this.nextCoaches)
+        this.nextCoaches = data.value.next
+        this.coaches = [...this.coaches,data.value.results]
         this.pending = false
       }
     },
     async fetchNextParticipants(){
       if(this.nextParticipants){
         this.pending = true
-        const data = await $fetch('/api/users/participants/',{query:{'next':this.nextParticipants}})
-        this.nextParticipants = data.next
-        this.coaches = [...this.participants,data.results]
+        const {data} = await useApiRequest(this.nextParticipants)
+        this.nextParticipants = data.value.next
+        this.coaches = [...this.participants,data.value.results]
         this.pending = false
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col p-4 gap-4 bg-woodsmoke rounded-lg min-h-max ">
+  <div class="flex flex-col p-4 gap-4 bg-woodsmoke rounded-lg ">
       <div class="flex flex-col gap-2 ring-1 ring-yellow rounded-lg p-4">
           <div class="flex flex-col md:flex-row justify-evenly">
             <p class="text-base font-title lg:text-xl text-yellow">{{ props.title }}</p>
@@ -11,11 +11,24 @@
             </p>
           </div>
       </div>
-      <div class="slider rounded-lg p-4 ring-1 ring-yellow" v-if="props.news_images">
-        <Swiper class="min-w-[360px] max-w-[360px]" :modules="[Pagination,EffectCards]" :grabCursor="true" :pagination="{clickable:true}"  
-        :effect="'cards'" >
+      <div class="slider rounded-lg p-4 ring-1 ring-yellow h-max" v-if="props.news_images.length >0">
+        <Swiper class="max-w-[360px]" 
+        :modules="[Autoplay, Pagination, Navigation]"
+                  :centeredSlides="true"
+                  :navigation="false"
+                  :slidesPerView="1"
+                  :spaceBetween="10"
+                  :loop="true"
+                  :autoplay="{
+                      delay: 2000,
+                      disableOnInteraction: false,
+                  }"
+                  :pagination="{
+                      clickable: true,
+                  }"
+                  :grabCursor="true">
           <SwiperSlide v-for="news_photo in props.news_images"  >
-            <img :src="news_photo" class="rounded-lg w-auto h-75"/>
+            <img :src="news_photo" class="rounded-lg w-fit "/>
           </SwiperSlide>
         </Swiper>
       </div>
@@ -25,7 +38,7 @@
 
 <script setup lang="ts">
 const router = useRouter()
-import { Pagination,EffectCards} from 'swiper/modules';
+import { Pagination,Autoplay,Navigation} from 'swiper/modules';
 import { type INews } from '~/types/db';
 
 const props = defineProps<INews>()

@@ -45,6 +45,18 @@ onMounted(()=>{
   userStore.initStore()
 })
 
+useHead({
+    title: "Учасники | TKD клуб ВОЇН",
+    meta: [
+        {name: 'description', content: "Учасники спортивного клубу taekwondo ВОЇН" }
+    ]
+})
+
+useSeoMeta({
+  title: "Учасники | TKD клуб ВОЇН",
+  description:participants
+})
+
 </script>
 
 <style>

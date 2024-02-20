@@ -34,6 +34,19 @@ onMounted(()=>{
 })
 
 
+useHead({
+    title: "Новини | TKD клуб ВОЇН",
+    meta: [
+        {name: 'description', content: "Новини спортивного клубу Taekwon-do ВОЇН" }
+    ]
+})
+
+useSeoMeta({
+  title:"Новини | TKD клуб ВОЇН",
+  description: news
+})
+
+
 
 </script>
 

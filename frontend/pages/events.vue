@@ -30,6 +30,14 @@ onMounted(()=>{
   competitionStore.initStore()
 })
 
+useHead({
+    title: "Змагання | TKD клуб ВОЇН",
+    meta: [
+        {name: 'description', content: competitions }
+    ]
+})
+
+
 </script>
 
 <style>

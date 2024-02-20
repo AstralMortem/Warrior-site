@@ -26,7 +26,7 @@
                 :spaceBetween="50"
                 :loop="true"
                 :autoplay="{
-                    delay: 5000,
+                    delay: 4000,
                     disableOnInteraction: false,
                 }"
                 :pagination="{
@@ -138,8 +138,21 @@ import {Autoplay, Pagination, Navigation} from 'swiper/modules'
 import {type IMainPage} from '~/types/db'
 
 
-const {data,pending} = await useFetch<IMainPage>('/api/main-page')
+const {data,pending} = await useApiRequest<IMainPage>('/api/main-page/')
+
 const zoom = ref(10)
+
+useHead({
+    title: "Головна | TKD клуб ВОЇН",
+    meta: [
+        {name: 'description', content: "Спортивний клуб Taekwon-do ВОЇН, Виховання духу, Дисципліна, Формування характеру" }
+    ]
+})
+
+useSeoMeta({
+  title:"Головна | TKD клуб ВОЇН",
+  description: data
+})
 
 </script>
 

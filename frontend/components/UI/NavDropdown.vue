@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 let showdrop = ref(false)
 
 const router = useRouter()
@@ -8,7 +8,19 @@ defineProps({
   }
 })
 
-const {data:belts,pending} = await useFetch('/api/belts')
+
+// const belts = ref(null)
+// const pending = ref(true)
+
+// onMounted(async ()=>{
+
+//   pending.value = pending.value
+//   belts.value = belts.value
+// })
+
+const {data:belts,pending} = await useApiRequest('/api/account/belts/')
+
+
 
 </script>
 

@@ -20,6 +20,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET",get_random_secret_key())
 DEBUG = os.getenv("DEBUG",False)
 
 
+
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
 ]
 
 CORE_APPS = [
@@ -50,6 +52,7 @@ THIRD_PARTY = [
     'rest_framework',
     'django_filters',
     'storages',
+    "corsheaders",
 ]
 INSTALLED_APPS += CORE_APPS
 INSTALLED_APPS += THIRD_PARTY
@@ -58,6 +61,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -90,19 +94,19 @@ WSGI_APPLICATION = 'admin.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'HOST': '127.0.0.1',
-            'PORT': 5432,
-            'USER': 'warrior',
-            'PASSWORD': 'warrior',
-            'NAME': 'warrior'
-        }
-    }
-else:
-    DATABASES = {
+# if DEBUG:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'HOST': '127.0.0.1',
+#             'PORT': 5432,
+#             'USER': 'warrior',
+#             'PASSWORD': 'warrior',
+#             'NAME': 'warrior'
+#         }
+#     }
+# else:
+DATABASES = {
         'default': dj_database_url.parse(os.getenv('DATABASE_URL'),
         conn_max_age=600,
         conn_health_checks=True),
@@ -147,6 +151,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -169,18 +174,22 @@ LOCATION_FIELD = {
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }
 
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS":{
-            "access_key": os.getenv("AWS_ACCESS_KEY_ID"),
-            "secret_key": os.getenv("AWS_SECRET_ACCESS_KEY"),
-            "bucket_name": os.getenv("AWS_STORAGE_BUCKET_NAME"),
-            "region_name": os.getenv("AWS_S3_REGION_NAME"),
+            "access_key": os.getenv("ACCESS_KEY"),
+            "secret_key": os.getenv("SECRET_KEY"),
+            "bucket_name": os.getenv("BUCKET_NAME"),
+            "region_name": os.getenv("REGION_NAME"),
             "querystring_auth": False,
+            "endpoint_url": f"https://{os.getenv("REGION_NAME")}.digitaloceanspace.com"
 
         }
     },
@@ -191,3 +200,5 @@ STORAGES = {
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
         }
 }
+
+CORS_ALLOW_ALL_ORIGINS=True

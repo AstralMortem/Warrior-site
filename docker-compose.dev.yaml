@@ -1,0 +1,50 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    container_name: pgdb-dev
+    environment:
+      POSTGRES_DB: "warrior"
+      POSTGRES_USER: "warrior"
+      POSTGRES_PASSWORD: "warrior"
+    volumes:
+      - pgdbdata:/var/lib/postgresql/data/
+    expose:
+      - 5432
+
+  backend:
+    container_name: warrior-backend-dev
+    build: 
+      context: .
+      dockerfile: ./docker/backend/Dockerfile.dev
+    command: "bash -c 'python manage.py migrate --noinput && gunicorn admin.wsgi:application --workers 10 --log-level debug --timeout 120 --bind 0.0.0.0:8000 --reload'"
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/src
+
+  frontend:
+    container_name: warrior-frontend-dev
+    build: 
+      context: .
+      dockerfile: ./docker/frontend/Dockerfile.dev
+    command: "yarn run dev --host 0.0.0.0"
+    depends_on:
+      - backend
+    env_file:
+      - ./.env.dev
+    ports:
+      - "24678:24678"
+      - "3000:3000"
+    volumes:
+      - ./frontend:/src:rw
+      - node_modules:/src/node_modules
+
+volumes:
+  pgdbdata: null
+  node_modules: null
+
