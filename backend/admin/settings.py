@@ -184,11 +184,12 @@ STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS":{
-            "access_key": os.getenv("AWS_ACCESS_KEY_ID"),
-            "secret_key": os.getenv("AWS_SECRET_ACCESS_KEY"),
-            "bucket_name": os.getenv("AWS_STORAGE_BUCKET_NAME"),
-            "region_name": os.getenv("AWS_S3_REGION_NAME"),
+            "access_key": os.getenv("ACCESS_KEY"),
+            "secret_key": os.getenv("SECRET_KEY"),
+            "bucket_name": os.getenv("BUCKET_NAME"),
+            "region_name": os.getenv("REGION_NAME"),
             "querystring_auth": False,
+            "endpoint_url": f"https://{os.getenv("REGION_NAME")}.digitaloceanspace.com"
 
         }
     },
