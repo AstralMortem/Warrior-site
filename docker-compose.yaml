@@ -28,7 +28,7 @@ services:
       - reverse-proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`api.warrior.localhost`)"
+      - "traefik.http.routers.backend.rule=Host(`api.warrior-tkd.pp.ua`)"
       - "traefik.http.routers.backend.entryPoints=http"
 
 
@@ -46,7 +46,7 @@ services:
       - ./.env.prod
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`warrior.localhost`)"
+      - "traefik.http.routers.frontend.rule=Host(`warrior-tkd.pp.ua`)"
       - "traefik.http.routers.frontend.entryPoints=http"
 
   reverse-proxy:
@@ -58,9 +58,8 @@ services:
       - "-log.level=DEBUG"
     ports:
       - "80:80"
-      - "8080:8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
 
 
